@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>muafq.xyz</title>
+    <style>
+        /* 设置页面背景为白色，居中对齐 */
+        body {
+            background-color: white; /* 设置背景颜色为白色 */
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* 使用视口高度 */
+            color: #333;
+            font-weight: bold; /* 全部加粗 */
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        /* 红色并放大两号字体 */
+        .highlight {
+            color: red;
+            font-size: 24px; /* 放大两个字号 */
+        }
+
+        /* 网址1的样式 */
+        .link {
+            font-size: 30px; /* 增大网址字体 */
+            color: blue; /* 蓝色字体 */
+            text-decoration: none;
+        }
+
+        .link:hover {
+            text-decoration: underline; /* 鼠标悬停时加下划线 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p class="highlight">请点击下方链接访问：</p>
+		<p><a class="link" href="https://muacloud.top" target="_blank">muacloud.top</a></p>
+        <p><a class="link" href="https://gdmn3.xyz" target="_blank">gdmn3.xyz（新）</a></p>
+        <p><a class="link" href="https://muacloud.xyz" target="_blank">muacloud.xyz</a></p>
+        <p><a class="link" href="https://gdmn1.xyz" target="_blank">gdmn1.xyz （新）</a></p>
+    </div>
+</body>
+</html>
