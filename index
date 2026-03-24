@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>muafq.xyz</title>
     <style>
-        /* 设置页面背景为白色，1居中对齐 */
+        /* 设置页面背景为白色，居中对齐 */
         body {
             background-color: white; /* 设置背景颜色为白色 */
             margin: 0;
