@@ -4,15 +4,21 @@
   "xboard": {
     "base_urls": [
       "https://muacloud2.help",
-      "https://gdmn1.xyz",
+      "https://gdmn1.xyz"
     ],
     "api_prefix": "/api/v1",
-    "subscribe_path": "/link"
+    "subscribe_path": "/link",
+    "subscribe_mode": "direct",
+    "probe_path": "/api/v1/guest/comm/config"
   },
   "client": {
-    "notice": "欢迎使用",
+    "name": "muacloud加速",
+    "site_name": "muacloud加速",
+    "notice": "欢迎回来。请留意套餐有效期与剩余流量。",
+    "custom_footer_html": "<script type=\"text/javascript\">window.$crisp=[];window.CRISP_WEBSITE_ID=\"4010755c-2d1e-42a1-8380-8f4c20fe01c4\";(function(){d=document;s=d.createElement(\"script\");s.src=\"https://client.crisp.chat/l.js\";s.async=1;d.getElementsByTagName(\"head\")[0].appendChild(s);})();</script>",
+    "footer_html": "",
     "force_update": false,
-    "minimum_version": "1.0.0",
-    "download_url": "https://download.example.com/app"
+    "minimum_version": "2.5.0-rc",
+    "download_url": ""
   }
 }
