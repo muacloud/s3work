@@ -1,45 +1,71 @@
 {
   "version": 1,
-  "updated_at": "2026-05-17T00:00:00+08:00",
+  "updated_at": "2026-05-20T00:00:00+08:00",
   "signature": "",
+  "remote_config_urls": [],
+  "release_page_url": "",
+  "default_client_name": "Xboard Client",
+  "remote_config_public_key": "",
+  "require_remote_config_signature": false,
+  "remote_config_aes_key": "",
   "xboard": {
     "base_urls": [
       "https://muacloud2.help",
       "https://gdmn1.xyz"
     ],
     "api_prefix": "/api/v1",
+    "api_prefixes": ["/api/v1"],
     "subscribe_path": "/link",
     "subscribe_mode": "direct",
-    "probe_path": "/api/v1/guest/comm/config"
+    "probe_path": "/api/v1/guest/comm/config",
+    "probe_timeout_ms": 2500,
+    "race_timeout_ms": 3500,
+    "subscribe_templates": [
+      "{base_url}{subscribe_path}/{token}",
+      "{base_url}/s/{token}",
+      "{base_url}/api/v1/client/subscribe?token={token}"
+    ],
+    "invite_url_template": "{base_url}/#/register?code={code}",
+    "api_paths": {
+      "client_config": "/client/app/getConfig",
+      "client_version": "/client/app/getVersion",
+      "client_usage": "/client/app/report"
+    }
   },
   "client": {
     "name": "muacloud加速",
+    "short_name": "muacloud加速",
     "site_name": "muacloud加速",
-    "notice": "欢迎回来。请留意套餐有效期与剩余流量。",
-    "custom_footer_html": "<script type=\"text/javascript\">window.$crisp=[];window.CRISP_WEBSITE_ID=\"4010755c-2d1e-42a1-8380-8f4c20fe01c4\";(function(){var d=document;var s=d.createElement(\"script\");s.src=\"https://client.crisp.chat/l.js\";s.async=1;d.getElementsByTagName(\"head\")[0].appendChild(s);})();</script>",
-    "footer_html": "",
-    "force_update": false,
-    "minimum_version": "2.5.0",
-    "download_url": "",
+    "notice": "任何问题请联系客服为您解决",
+    "support_url": "",
+    "support": {
+      "url": "",
+      "support_url": "",
+      "crisp_website_id": "4010755c-2d1e-42a1-8380-8f4c20fe01c4",
+      "client_id": "4010755c-2d1e-42a1-8380-8f4c20fe01c4"
+    },
+    "invite_description": "",
+    "invite_text": "",
+    "invite_commission_rate": "",
     "app_update": {
-      "windows": {
-        "version": "2.5.0",
+      "android": {
+        "version": "0.0.0",
         "download_url": ""
+      },
+      "windows": {
+        "version": "0.0.0",
+        "minimum_version": "0.0.0",
+        "download_url": "",
+        "notes": "",
+        "force_update": false
       },
       "macos": {
-        "version": "2.5.0",
-        "download_url": ""
-      },
-      "android": {
-        "version": "2.5.0",
-        "download_url": ""
+        "version": "0.0.0",
+        "minimum_version": "0.0.0",
+        "download_url": "",
+        "notes": "",
+        "force_update": false
       }
-    },
-    "windows_version": "2.5.0",
-    "windows_download_url": "",
-    "macos_version": "2.5.0",
-    "macos_download_url": "",
-    "android_version": "2.5.0",
-    "android_download_url": ""
+    }
   }
 }
