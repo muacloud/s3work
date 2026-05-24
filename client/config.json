@@ -10,8 +10,8 @@
   "remote_config_aes_key": "",
   "xboard": {
     "base_urls": [
-      "https://muacloud2.help",
-      "https://gdmn1.xyz"
+      "https://5.muacloud.xyz",
+      "https://muacloud.vip"
     ],
     "api_prefix": "/api/v1",
     "api_prefixes": ["/api/v1"],
