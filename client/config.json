@@ -12,6 +12,8 @@
     "base_urls": [
       "https://5.muacloud.xyz",
       "https://muacloud.vip"
+      "https://5.muacloud.vip",
+      "https://5.12o.ooo"
     ],
     "api_prefix": "/api/v1",
     "api_prefixes": ["/api/v1"],
