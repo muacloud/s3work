@@ -8,56 +8,87 @@
     <style>
         /* 设置页面背景为白色，居中对齐 */
         body {
-            background-color: white; /* 设置背景颜色为白色 */
+            background-color: white;
             margin: 0;
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* 使用视口高度 */
+            height: 100vh;
             color: #333;
-            font-weight: bold; /* 全部加粗 */
+            font-weight: bold;
         }
 
         .container {
             text-align: center;
         }
 
-        h1 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-
         p {
             font-size: 18px;
         }
 
-        /* 红色并放大两号字体 */
         .highlight {
             color: red;
-            font-size: 24px; /* 放大两个字号 */
+            font-size: 24px;
         }
 
-        /* 网址1的样式 */
+        /* 网址样式 */
         .link {
-            font-size: 30px; /* 增大网址字体 */
-            color: blue; /* 蓝色字体 */
+            font-size: 30px;
+            color: blue;
             text-decoration: none;
+            display: block; /* 每个链接占一行 */
+            margin: 10px 0;
         }
 
         .link:hover {
-            text-decoration: underline; /* 鼠标悬停时加下划线 */
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="container">
-		<p class="highlight">根据当前日期搭配 '年'+'月'+'域名' </p>
-		<p class="highlight">请点击下方链接访问：</p>
-		<p><a class="link" href="https://2605.muacloud.vip" target="_blank">2605.muacloud.vip</a></p>
-        <p><a class="link" href="https://2605.gdmn3.xyz" target="_blank">2605.gdmn3.xyz</a></p>
-        <p><a class="link" href="https://2605.muacloud.xyz" target="_blank">2605.muacloud.xyz</a></p>
-        <p><a class="link" href="https://2605.gdmn1.xyz" target="_blank">2605.gdmn1.xyz</a></p>
+        <p class="highlight">根据当前日期搭配 '年'+'月'+'域名' </p>
+        <p class="highlight">请点击下方链接访问：</p>
+        
+        <div id="link-container">
+            正在加载最新地址...
+        </div>
     </div>
+
+    <script>
+        (function() {
+            // 1. 获取当前日期
+            const now = new Date();
+            const year = now.getFullYear().toString().slice(-2); // 获取年份后两位 (如 26)
+            const month = (now.getMonth() + 1).toString().padStart(2, '0'); // 获取月份并补零 (如 05)
+            
+            // 2. 生成前缀 (如 2605)
+            const prefix = year + month;
+
+            // 3. 定义根域名列表
+            const baseDomains = [
+                "muacloud.vip",
+                "gdmn3.xyz",
+                "muacloud.xyz",
+                "gdmn1.xyz"
+            ];
+
+            // 4. 获取显示链接的容器
+            const container = document.getElementById('link-container');
+            container.innerHTML = ''; // 清空加载提示
+
+            // 5. 循环生成并插入动态链接
+            baseDomains.forEach(domain => {
+                const fullUrl = `https://${prefix}.${domain}`;
+                const a = document.createElement('a');
+                a.href = fullUrl;
+                a.className = 'link';
+                a.target = '_blank';
+                a.innerText = `${prefix}.${domain}`;
+                container.appendChild(a);
+            });
+        })();
+    </script>
 </body>
 </html>
