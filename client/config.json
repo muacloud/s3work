@@ -55,16 +55,16 @@
         "download_url": ""
       },
       "windows": {
-        "version": "0.0.0",
+        "version": "2.5.2",
         "minimum_version": "0.0.0",
-        "download_url": "",
+        "download_url": "https://5.muacloud.vip/download/MuaCloud_2.5.2_x64-setup.exe",
         "notes": "",
         "force_update": false
       },
       "macos": {
-        "version": "0.0.0",
+        "version": "2.5.2",
         "minimum_version": "0.0.0",
-        "download_url": "",
+        "download_url": "https://5.muacloud.vip/download/MuaCloud_2.5.2_M.dmg",
         "notes": "",
         "force_update": false
       }
