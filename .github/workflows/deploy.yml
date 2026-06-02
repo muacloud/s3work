@@ -24,7 +24,7 @@ jobs:
       - name: Checkout muacloud.github.io
         uses: actions/checkout@v4
         with:
-          repository: 你的GitHub用户名/muacloud.github.io
+          repository: muacloud/muacloud.github.io
           path: site
 
       # AWS 登录
