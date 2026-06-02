@@ -1,4 +1,4 @@
-```yaml id="bwzj2y"
+```yaml id="0kkqax"
 name: Deploy Static Website
 
 on:
@@ -7,9 +7,6 @@ on:
       - main
 
   workflow_dispatch:
-
-  schedule:
-    - cron: '*/5 * * * *'
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -20,14 +17,12 @@ jobs:
 
     steps:
 
-      # 拉取 muacloud.github.io 仓库
       - name: Checkout muacloud.github.io
         uses: actions/checkout@v4
         with:
           repository: muacloud/muacloud.github.io
           path: site
 
-      # AWS 登录
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -35,17 +30,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-east-1
 
-      # 上传到 S3
       - name: Sync to S3
         run: |
-
           aws s3 sync ./site s3://${{ secrets.AWS_S3_BUCKET }} \
             --delete \
             --exclude ".git/*" \
             --exclude ".github/*" \
             --exclude "README.md"
 
-          # 修正 HTML MIME
           aws s3 cp s3://${{ secrets.AWS_S3_BUCKET }} s3://${{ secrets.AWS_S3_BUCKET }} \
             --recursive \
             --exclude "*" \
@@ -53,7 +45,6 @@ jobs:
             --metadata-directive REPLACE \
             --content-type "text/html"
 
-          # 修正 CSS MIME
           aws s3 cp s3://${{ secrets.AWS_S3_BUCKET }} s3://${{ secrets.AWS_S3_BUCKET }} \
             --recursive \
             --exclude "*" \
@@ -61,7 +52,6 @@ jobs:
             --metadata-directive REPLACE \
             --content-type "text/css"
 
-          # 修正 JS MIME
           aws s3 cp s3://${{ secrets.AWS_S3_BUCKET }} s3://${{ secrets.AWS_S3_BUCKET }} \
             --recursive \
             --exclude "*" \
@@ -69,7 +59,6 @@ jobs:
             --metadata-directive REPLACE \
             --content-type "application/javascript"
 
-      # 刷新 CloudFront 缓存
       - name: Create CloudFront Invalidation
         run: |
           aws cloudfront create-invalidation \
