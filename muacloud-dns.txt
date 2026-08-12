@@ -7,7 +7,7 @@ fallback-dns-server = https://doh.pub/dns-query,https://dns.alidns.com/dns-query
 dns-direct-system = false
 
 # Force local name resolution in both Proxy and Config routing modes.
-always-ip-address = true
+always-ip-address = false
 
 # Apply the Host DNS assignment to proxied connections too.
 use-local-host-item-for-proxy = true
