@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - client-config.env
-      - shadowrocket-dns.conf
+      - shadowrocket-dns.txt
       - .github/workflows/deploy.yml
 
   workflow_dispatch:
@@ -36,7 +36,7 @@ jobs:
       - name: Validate files
         run: |
           test -s config/client-config.env
-          test -s config/shadowrocket-dns.conf
+          test -s config/shadowrocket-dns.txt
           test -s site/index.html
           grep -q '^api_domains=' config/client-config.env
 
@@ -55,7 +55,7 @@ jobs:
             --exclude ".github/*" \
             --exclude "README.md" \
             --exclude "client-config.env" \
-            --exclude "shadowrocket-dns.conf"
+            --exclude "shadowrocket-dns.txt"
 
       - name: Upload client config
         run: |
@@ -66,8 +66,8 @@ jobs:
 
       - name: Upload shadowrocket config
         run: |
-          aws s3 cp config/shadowrocket-dns.conf \
-            s3://${{ secrets.AWS_S3_BUCKET }}/shadowrocket-dns.conf \
+          aws s3 cp config/shadowrocket-dns.txt \
+            s3://${{ secrets.AWS_S3_BUCKET }}/shadowrocket-dns.txt \
             --content-type "text/plain; charset=utf-8" \
             --cache-control "no-cache, max-age=60"
 
