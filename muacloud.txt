@@ -21,7 +21,9 @@ use-local-host-item-for-proxy = true
 # Only the domains listed here use the dedicated AliDNS DoH endpoint.
 # Anything not listed falls through to dns-server above.
 snejsat.baidu.com = server:https://874711-8pxv27wt3mhig10r.alidns.com/dns-query
-
+2a.gongfuxiong.help = server:https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
+d.4iox.net = server:https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
+    '': 
 [Rule]
 # Rules are matched top-down; the first hit wins.
 # no-resolve keeps IP rules from triggering a DNS lookup on domain requests.
