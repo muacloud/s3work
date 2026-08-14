@@ -22,6 +22,7 @@ use-local-host-item-for-proxy = true
 # Anything not listed falls through to dns-server above.
 snejsat.baidu.com = server:https://874711-8pxv27wt3mhig10r.alidns.com/dns-query
 2a.gongfuxiong.help = server:https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
+b.miungaming.net = server:https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
 d.4iox.net = server:https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
     '': 
 [Rule]
