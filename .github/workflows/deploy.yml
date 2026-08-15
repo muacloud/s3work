@@ -7,6 +7,7 @@ on:
     paths:
       - client-config.env
       - muacloud.txt
+      - quantumultX.txt
       - .github/workflows/deploy.yml
 
   workflow_dispatch:
@@ -37,6 +38,7 @@ jobs:
         run: |
           test -s config/client-config.env
           test -s config/muacloud.txt
+          test -s config/quantumultX.txt
           test -s site/index.html
           grep -q '^api_domains=' config/client-config.env
 
@@ -55,7 +57,8 @@ jobs:
             --exclude ".github/*" \
             --exclude "README.md" \
             --exclude "client-config.env" \
-            --exclude "muacloud.txt"
+            --exclude "muacloud.txt" \
+            --exclude "quantumultX.txt"
 
       - name: Upload client config
         run: |
@@ -68,6 +71,13 @@ jobs:
         run: |
           aws s3 cp config/muacloud.txt \
             s3://${{ secrets.AWS_S3_BUCKET }}/muacloud.txt \
+            --content-type "text/plain; charset=utf-8" \
+            --cache-control "no-cache, max-age=60"
+
+      - name: Upload quantumult x config
+        run: |
+          aws s3 cp config/quantumultX.txt \
+            s3://${{ secrets.AWS_S3_BUCKET }}/quantumultX.txt \
             --content-type "text/plain; charset=utf-8" \
             --cache-control "no-cache, max-age=60"
 
