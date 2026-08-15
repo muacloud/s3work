@@ -1,0 +1,137 @@
+[general]
+# 节点延迟测试地址
+server_check_url=http://www.gstatic.com/generate_204
+# 网络可用性检测
+network_check_url=http://www.qualcomm.cn/generate_204
+# 需要绕过 QX DNS 模块、直接交给系统解析的域名可写在这里
+; dns_exclusion_list=*.example.com
+
+[dns]
+# 公共 DoH，负责所有普通域名。
+# 刻意使用 IP 形式的 URL：填主机名的话，在解析器可用之前就需要先做一次查询，
+# 而那时没有任何东西能回答它。
+# 多个 DoH 写在同一行、逗号分隔 —— QX 会并发查询、先到先用，
+# 这就是冗余机制，不存在单独的 fallback 键。
+doh-server=https://1.12.12.12/dns-query, https://223.5.5.5/dns-query
+
+# 只有下面这四个域名使用专属 AliDNS DoH，未列出的一律走上面的公共 DoH。
+doh-server=/snejsat.baidu.com/https://874711-8pxv27wt3mhig10r.alidns.com/dns-query
+doh-server=/2a.gongfuxiong.help/https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
+doh-server=/b.miungaming.net/https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
+doh-server=/d.4iox.net/https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
+
+# 注意：一旦设置了 doh-server，system 以及所有"未绑定特定域名"的明文 server=
+# 都会被忽略，所以这里不再列明文 DNS —— 列了也不会被用到。
+
+[policy]
+# 把你订阅里的节点填进这个组。组名 PROXY 与下面 filter 里引用的名字对应。
+# 也可换成 available / round-robin / dest-hash 等其他类型。
+static=PROXY, direct, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/Static.png
+
+[server_remote]
+# 你的订阅地址填这里
+; https://example.com/subscribe, tag=订阅, update-interval=172800, opt-parser=false, enabled=true
+
+[filter_local]
+# 规则自上而下匹配，第一条命中即生效。
+# no-resolve 用于避免域名请求为了匹配 IP 规则而触发一次 DNS 查询。
+
+# ---- 解析器本身不能依赖自己 ----
+# 没有这几条的话，DoH 服务器地址会一路落到 geoip,cn，而那需要一次查询才能判断，
+# 那次查询又要靠这些服务器 —— 冷启动或切换网络后解析卡死就是这么来的。
+ip-cidr, 1.12.12.12/32, direct, no-resolve
+ip-cidr, 120.53.53.53/32, direct, no-resolve
+ip-cidr, 223.5.5.5/32, direct, no-resolve
+ip-cidr, 223.6.6.6/32, direct, no-resolve
+host-suffix, doh.pub, direct
+host-suffix, alidns.com, direct
+
+# ---- 回环、内网与本地名称 ----
+ip-cidr, 127.0.0.0/8, direct, no-resolve
+ip-cidr, 10.0.0.0/8, direct, no-resolve
+ip-cidr, 172.16.0.0/12, direct, no-resolve
+ip-cidr, 192.168.0.0/16, direct, no-resolve
+ip-cidr, 100.64.0.0/10, direct, no-resolve
+ip-cidr, 169.254.0.0/16, direct, no-resolve
+ip6-cidr, ::1/128, direct, no-resolve
+ip6-cidr, fc00::/7, direct, no-resolve
+ip6-cidr, fe80::/10, direct, no-resolve
+host, localhost, direct
+host-suffix, local, direct
+host-suffix, lan, direct
+
+# ---- 中国大陆域名 ----
+# 覆盖 .cn、.com.cn、.net.cn、.gov.cn、.edu.cn ...
+host-suffix, cn, direct
+host-suffix, alibaba.com, direct
+host-suffix, alicdn.com, direct
+host-suffix, alipay.com, direct
+host-suffix, aliyun.com, direct
+host-suffix, taobao.com, direct
+host-suffix, tmall.com, direct
+host-suffix, baidu.com, direct
+host-suffix, bdstatic.com, direct
+host-suffix, qq.com, direct
+host-suffix, tencent.com, direct
+host-suffix, myqcloud.com, direct
+host-suffix, gtimg.com, direct
+host-suffix, wechat.com, direct
+host-suffix, jd.com, direct
+host-suffix, jdcloud.com, direct
+host-suffix, 163.com, direct
+host-suffix, 126.com, direct
+host-suffix, 126.net, direct
+host-suffix, netease.com, direct
+host-suffix, sina.com, direct
+host-suffix, weibo.com, direct
+host-suffix, weibocdn.com, direct
+host-suffix, bilibili.com, direct
+host-suffix, hdslb.com, direct
+host-suffix, zhihu.com, direct
+host-suffix, zhimg.com, direct
+host-suffix, douyin.com, direct
+host-suffix, douyinvod.com, direct
+host-suffix, bytedance.com, direct
+host-suffix, byteimg.com, direct
+host-suffix, toutiao.com, direct
+host-suffix, ixigua.com, direct
+host-suffix, kuaishou.com, direct
+host-suffix, meituan.com, direct
+host-suffix, meituan.net, direct
+host-suffix, dianping.com, direct
+host-suffix, ele.me, direct
+host-suffix, xiaomi.com, direct
+host-suffix, mi.com, direct
+host-suffix, miui.com, direct
+host-suffix, huawei.com, direct
+host-suffix, hicloud.com, direct
+host-suffix, oppo.com, direct
+host-suffix, vivo.com, direct
+host-suffix, pinduoduo.com, direct
+host-suffix, yangkeduo.com, direct
+host-suffix, xiaohongshu.com, direct
+host-suffix, xhscdn.com, direct
+host-suffix, iqiyi.com, direct
+host-suffix, youku.com, direct
+host-suffix, mgtv.com, direct
+host-suffix, sohu.com, direct
+host-suffix, sogou.com, direct
+host-suffix, ctrip.com, direct
+host-suffix, cctv.com, direct
+
+# ---- 已知境外域名，排在 geoip 之前 ----
+# 这些域名一旦被投毒会解析到大陆 IP，geoip,cn 就会把它判成 direct 然后卡住。
+# 延迟测试用的地址放在这里是同样的原因：好节点被显示成超时。
+host-suffix, gstatic.com, PROXY
+host, cp.cloudflare.com, PROXY
+host-suffix, google.com, PROXY
+host-suffix, googleapis.com, PROXY
+host-suffix, githubusercontent.com, PROXY
+host-suffix, github.com, PROXY
+
+# ---- 中国大陆 IP ----
+# 解析结果落在 CN 地址的一律直连。
+geoip, cn, direct
+
+# 其余全部走代理。
+final, PROXY
