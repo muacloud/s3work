@@ -4,7 +4,7 @@ server_check_url=http://www.gstatic.com/generate_204
 # 网络可用性检测
 network_check_url=http://www.qualcomm.cn/generate_204
 # 需要绕过 QX DNS 模块、直接交给系统解析的域名可写在这里
-; dns_exclusion_list=*.example.com
+# dns_exclusion_list=*.example.com
 
 [dns]
 # 公共 DoH，负责所有普通域名。
@@ -24,8 +24,19 @@ doh-server=/d.4iox.net/https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
 # 都会被忽略，所以这里不再列明文 DNS —— 列了也不会被用到。
 
 [policy]
+# 下面的规则里引用了策略组 PROXY，它必须在这里真实存在，否则规则无效。
+# 当前是占位定义（等同直连）。等 [server_remote] 填入订阅、
+# 或 [server_local] 填入节点后，把它们加进这一行，例如：
+#   static=PROXY, 香港节点, 日本节点, direct
+static=PROXY, direct
 
 [server_remote]
+
+[filter_remote]
+
+[rewrite_remote]
+
+[server_local]
 
 [filter_local]
 # 规则自上而下匹配，第一条命中即生效。
@@ -130,3 +141,11 @@ geoip, cn, direct
 
 # 其余全部走代理。
 final, PROXY
+
+[rewrite_local]
+
+[task_local]
+
+[http_backend]
+
+[mitm]
