@@ -1,150 +1,78 @@
 [general]
-# 节点延迟测试地址
-server_check_url=http://www.gstatic.com/generate_204
-# 网络可用性检测
-network_check_url=http://www.qualcomm.cn/generate_204
-# 需要绕过 QX DNS 模块、直接交给系统解析的域名可写在这里
-# dns_exclusion_list=*.example.com
+server_check_url= http://www.qualcomm.cn/generate_204
+server_check_timeout=2000
+resource_parser_url= https://fastly.jsdelivr.net/gh/KOP-XIAO/QuantumultX@master/Scripts/resource-parser.js
+geo_location_checker=http://ip-api.com/json/?lang=zh-CN, https://raw.githubusercontent.com/KOP-XIAO/QuantumultX/master/Scripts/IP_API.js
+fallback_udp_policy=direct
 
 [dns]
-# 公共 DoH，负责所有普通域名。
-# 刻意使用 IP 形式的 URL：填主机名的话，在解析器可用之前就需要先做一次查询，
-# 而那时没有任何东西能回答它。
-# 多个 DoH 写在同一行、逗号分隔 —— QX 会并发查询、先到先用，
-# 这就是冗余机制，不存在单独的 fallback 键。
+server=114.114.114.114
+server=202.141.176.93
+server=202.141.178.13
+server=117.50.10.10
+server=223.5.5.5
+server=119.29.29.29:53
+server=119.28.28.28
 doh-server=https://1.12.12.12/dns-query, https://223.5.5.5/dns-query
-
-# 只有下面这四个域名使用专属 AliDNS DoH，未列出的一律走上面的公共 DoH。
 doh-server=/snejsat.baidu.com/https://874711-8pxv27wt3mhig10r.alidns.com/dns-query
 doh-server=/2a.gongfuxiong.help/https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
 doh-server=/b.miungaming.net/https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
 doh-server=/d.4iox.net/https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
 
-# 注意：一旦设置了 doh-server，system 以及所有"未绑定特定域名"的明文 server=
-# 都会被忽略，所以这里不再列明文 DNS —— 列了也不会被用到。
+[task_local]
+2 12 * * * sample.js, tag=本地示范(左滑编辑，右滑执行), enabled=false, img-url=https://raw.githubusercontent.com/crossutility/Quantumult-X/master/quantumult-x.png
+13 12 * * * https://raw.githubusercontent.com/crossutility/Quantumult-X/master/sample-task.js, tag=远程示范(点击缓存/更新脚本), enabled=false, img-url=https://raw.githubusercontent.com/crossutility/Quantumult-X/master/quantumult-x.png
+event-interaction https://raw.githubusercontent.com/KOP-XIAO/QuantumultX/master/Scripts/streaming-ui-check.js, tag = 流媒体 - 解锁查询, img-url=checkmark.seal.system, enabled=true
 
 [policy]
-# 下面的规则里引用了策略组 PROXY，它必须在这里真实存在，否则规则无效。
-# 当前是占位定义（等同直连）。等 [server_remote] 填入订阅、
-# 或 [server_local] 填入节点后，把它们加进这一行，例如：
-#   static=PROXY, 香港节点, 日本节点, direct
-static=PROXY, direct
+static=🍎 苹果服务, direct, proxy, img-url= https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Apple.png
+static=💻 国外影视, proxy, direct, img-url= https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/ForeignMedia.png
+static=📽 国内视频, direct, proxy, img-url= https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/DomesticMedia.png
+static=🎬 YouTube, proxy, direct, img-url= https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/YouTube.png
+static=📺 Netflix, proxy, direct, img-url= https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Netflix_Letter.png
+static=🌏 国外网站, proxy,direct,🇭🇰️ 香港(正则示范), img-url= https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Global.png
+static=🕹 终极清单,direct, proxy, img-url= https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Final.png
+static= 🇭🇰️ 香港(正则示范), server-tag-regex= 香港|🇭🇰️|HK|Hong, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/HK.png
 
 [server_remote]
+https://raw.githubusercontent.com/crossutility/Quantumult-X/master/server.snippet#rename=[香港], tag=URI格式示范(请导入自己订阅), update-interval=86400, opt-parser=true,  img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Quantumult_X.png, enabled=true
+https://raw.githubusercontent.com/crossutility/Quantumult-X/master/server-complete.snippet, tag=QuanX格式示范(导入后删除这两个示范),  img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Quantumult_X.png, enabled=true
 
 [filter_remote]
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/Guard/Advertising.list, tag=🚦去广告, update-interval=86400, opt-parser=true, enabled=true
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/Guard/Hijacking.list, tag=🚫 运营商劫持, enabled=true
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/StreamingMedia/StreamingCN.list, force-policy=📽 国内视频, tag=📽 国内视频, enabled=true
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/StreamingMedia/Video/Netflix.list, tag=📺 Netflix, force-policy=📺 Netflix, enabled=true
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/StreamingMedia/Video/YouTube.list, tag=🎬 YouTube, force-policy=🎬 YouTube, enabled=true
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/StreamingMedia/Streaming.list, tag=💻 国外影视,force-policy= 💻 国外影视, enabled=true
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/Global.list, tag=🌍 国外网站, force-policy= 🌏 国外网站, enabled=true
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/Extra/Apple/Apple.list, tag= Apple服务, force-policy=🍎 苹果服务,enabled=true
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/Extra/Apple/BlockiOSUpdate.list, tag= 屏蔽更新,enabled=true
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/China.list, tag=🐼 国内网站, enabled=true
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/Extra/ChinaIP.list, tag=🇨🇳️ 国内IP池, enabled=true
 
 [rewrite_remote]
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Rewrite/Block/Advertising.conf, tag=神机复写(⛔️去广告), update-interval=86400, opt-parser=false, enabled=true
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Rewrite/General.conf, tag=神机复写(😄️通用), update-interval=86400, opt-parser=false, enabled=true
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Rewrite/Block/YouTubeAds.conf, tag=神机复写(🈲YouTube-AD) , update-interval=86400, opt-parser=false, enabled=false
 
 [server_local]
 
 [filter_local]
-# 规则自上而下匹配，第一条命中即生效。
-# no-resolve 用于避免域名请求为了匹配 IP 规则而触发一次 DNS 查询。
-
-# ---- 解析器本身不能依赖自己 ----
-# 没有这几条的话，DoH 服务器地址会一路落到 geoip,cn，而那需要一次查询才能判断，
-# 那次查询又要靠这些服务器 —— 冷启动或切换网络后解析卡死就是这么来的。
+host-suffix, alidns.com, direct
+host-suffix, doh.pub, direct
 ip-cidr, 1.12.12.12/32, direct, no-resolve
 ip-cidr, 120.53.53.53/32, direct, no-resolve
 ip-cidr, 223.5.5.5/32, direct, no-resolve
 ip-cidr, 223.6.6.6/32, direct, no-resolve
-host-suffix, doh.pub, direct
-host-suffix, alidns.com, direct
-
-# ---- 回环、内网与本地名称 ----
-ip-cidr, 127.0.0.0/8, direct, no-resolve
-ip-cidr, 10.0.0.0/8, direct, no-resolve
-ip-cidr, 172.16.0.0/12, direct, no-resolve
-ip-cidr, 192.168.0.0/16, direct, no-resolve
-ip-cidr, 100.64.0.0/10, direct, no-resolve
-ip-cidr, 169.254.0.0/16, direct, no-resolve
-ip6-cidr, ::1/128, direct, no-resolve
-ip6-cidr, fc00::/7, direct, no-resolve
-ip6-cidr, fe80::/10, direct, no-resolve
-host, localhost, direct
-host-suffix, local, direct
-host-suffix, lan, direct
-
-# ---- 中国大陆域名 ----
-# 覆盖 .cn、.com.cn、.net.cn、.gov.cn、.edu.cn ...
-host-suffix, cn, direct
-host-suffix, alibaba.com, direct
-host-suffix, alicdn.com, direct
-host-suffix, alipay.com, direct
-host-suffix, aliyun.com, direct
-host-suffix, taobao.com, direct
-host-suffix, tmall.com, direct
-host-suffix, baidu.com, direct
-host-suffix, bdstatic.com, direct
-host-suffix, qq.com, direct
-host-suffix, tencent.com, direct
-host-suffix, myqcloud.com, direct
-host-suffix, gtimg.com, direct
-host-suffix, wechat.com, direct
-host-suffix, jd.com, direct
-host-suffix, jdcloud.com, direct
-host-suffix, 163.com, direct
-host-suffix, 126.com, direct
-host-suffix, 126.net, direct
-host-suffix, netease.com, direct
-host-suffix, sina.com, direct
-host-suffix, weibo.com, direct
-host-suffix, weibocdn.com, direct
-host-suffix, bilibili.com, direct
-host-suffix, hdslb.com, direct
-host-suffix, zhihu.com, direct
-host-suffix, zhimg.com, direct
-host-suffix, douyin.com, direct
-host-suffix, douyinvod.com, direct
-host-suffix, bytedance.com, direct
-host-suffix, byteimg.com, direct
-host-suffix, toutiao.com, direct
-host-suffix, ixigua.com, direct
-host-suffix, kuaishou.com, direct
-host-suffix, meituan.com, direct
-host-suffix, meituan.net, direct
-host-suffix, dianping.com, direct
-host-suffix, ele.me, direct
-host-suffix, xiaomi.com, direct
-host-suffix, mi.com, direct
-host-suffix, miui.com, direct
-host-suffix, huawei.com, direct
-host-suffix, hicloud.com, direct
-host-suffix, oppo.com, direct
-host-suffix, vivo.com, direct
-host-suffix, pinduoduo.com, direct
-host-suffix, yangkeduo.com, direct
-host-suffix, xiaohongshu.com, direct
-host-suffix, xhscdn.com, direct
-host-suffix, iqiyi.com, direct
-host-suffix, youku.com, direct
-host-suffix, mgtv.com, direct
-host-suffix, sohu.com, direct
-host-suffix, sogou.com, direct
-host-suffix, ctrip.com, direct
-host-suffix, cctv.com, direct
-
-# ---- 已知境外域名，排在 geoip 之前 ----
-# 这些域名一旦被投毒会解析到大陆 IP，geoip,cn 就会把它判成 direct 然后卡住。
-# 延迟测试用的地址放在这里是同样的原因：好节点被显示成超时。
-host-suffix, gstatic.com, PROXY
-host, cp.cloudflare.com, PROXY
-host-suffix, google.com, PROXY
-host-suffix, googleapis.com, PROXY
-host-suffix, githubusercontent.com, PROXY
-host-suffix, github.com, PROXY
-
-# ---- 中国大陆 IP ----
-# 解析结果落在 CN 地址的一律直连。
-geoip, cn, direct
-
-# 其余全部走代理。
-final, PROXY
+ip-cidr, 10.0.0.0/8, direct
+ip-cidr, 127.0.0.0/8, direct
+ip-cidr, 172.16.0.0/12, direct
+ip-cidr, 192.168.0.0/16, direct
+ip-cidr, 224.0.0.0/24, direct
+final, 🕹 终极清单
 
 [rewrite_local]
-
-[task_local]
 
 [http_backend]
 
