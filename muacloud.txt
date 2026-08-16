@@ -1,66 +1,134 @@
-[general]
-server_check_url= http://www.qualcomm.cn/generate_204
-server_check_timeout=2000
-resource_parser_url= https://fastly.jsdelivr.net/gh/KOP-XIAO/QuantumultX@master/Scripts/resource-parser.js
-geo_location_checker=http://ip-api.com/json/?lang=zh-CN, https://raw.githubusercontent.com/KOP-XIAO/QuantumultX/master/Scripts/IP_API.js
-fallback_udp_policy=direct
+# Shadowrocket: 2026-08-16 21:41:02
+[General]
+# Public DoH resolvers for normal domains.
+# IP form on purpose: a hostname here would need a lookup before the
+# resolver is usable, and there is nothing left to answer it.
+dns-server = https://1.12.12.12/dns-query,https://223.5.5.5/dns-query
 
-[dns]
-server=114.114.114.114
-server=223.5.5.5
-server=119.29.29.29:53
-doh-server=https://1.12.12.12/dns-query, https://223.5.5.5/dns-query
-doh-server=/snejsat.baidu.com/https://874711-8pxv27wt3mhig10r.alidns.com/dns-query
-doh-server=/2a.gongfuxiong.help/https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
-doh-server=/b.miungaming.net/https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
-doh-server=/d.4iox.net/https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
+# Keep fallback encrypted, but point it at a different provider so it is
+# an actual fallback instead of a copy of the line above.
+fallback-dns-server = https://223.6.6.6/dns-query
+dns-direct-system = false
 
-[task_local]
-event-interaction https://raw.githubusercontent.com/KOP-XIAO/QuantumultX/master/Scripts/streaming-ui-check.js, tag = 流媒体 - 解锁查询, img-url=checkmark.seal.system, enabled=true
+# Proxied connections hand the domain to the node and resolve there.
+# The [Host] entries below are the exception - they still resolve locally,
+# which is what use-local-host-item-for-proxy is for.
+always-ip-address = false
 
-[policy]
-static=🍎 苹果服务, direct, proxy, img-url= https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Apple.png
-static=💻 国外影视, proxy, direct, img-url= https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/ForeignMedia.png
-static=📽 国内视频, direct, proxy, img-url= https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/DomesticMedia.png
-static=🎬 YouTube, proxy, direct, img-url= https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/YouTube.png
-static=📺 Netflix, proxy, direct, img-url= https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Netflix_Letter.png
-static=🌏 国外网站, proxy, direct, img-url= https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Global.png
-static=🕹 终极清单, direct, proxy, img-url= https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Final.png
+# Apply the [Host] DNS assignment to proxied connections too.
+use-local-host-item-for-proxy = true
+update-url = https://d1m6vp8arykpci.cloudfront.net/muacloud.txt
 
-[server_remote]
+[Rule]
+# Rules are matched top-down; the first hit wins.
+# no-resolve keeps IP rules from triggering a DNS lookup on domain requests.
 
-[filter_remote]
-https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/AdvertisingLite/AdvertisingLite.list, tag=🚦 去广告, force-policy=reject, update-interval=86400, opt-parser=false, enabled=true
-https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Hijacking/Hijacking.list, tag=🚫 运营商劫持, force-policy=reject, update-interval=86400, opt-parser=false, enabled=true
-https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/ChinaMedia/ChinaMedia.list, tag=📽 国内视频, force-policy=📽 国内视频, update-interval=86400, opt-parser=false, enabled=true
-https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Netflix/Netflix.list, tag=📺 Netflix, force-policy=📺 Netflix, update-interval=86400, opt-parser=false, enabled=true
-https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/YouTube/YouTube.list, tag=🎬 YouTube, force-policy=🎬 YouTube, update-interval=86400, opt-parser=false, enabled=true
-https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/GlobalMedia/GlobalMedia.list, tag=💻 国外影视, force-policy=💻 国外影视, update-interval=86400, opt-parser=false, enabled=true
-https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Apple/Apple.list, tag=🍎 苹果服务, force-policy=🍎 苹果服务, update-interval=86400, opt-parser=false, enabled=true
-https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Global/Global.list, tag=🌏 国外网站, force-policy=🌏 国外网站, update-interval=86400, opt-parser=false, enabled=true
-https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/China/China.list, tag=🐼 国内网站, force-policy=direct, update-interval=86400, opt-parser=false, enabled=true
-https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/ChinaIPs/ChinaIPs.list, tag=🇨🇳 国内IP池, force-policy=direct, update-interval=86400, opt-parser=false, enabled=true
+# ---- Resolvers must not depend on themselves ----
+# Without these the DoH hostnames fall through to GEOIP,CN, which needs a
+# lookup to decide - and that lookup needs these same servers. That deadlock
+# is why lookups stalled after a cold start or a network switch.
+IP-CIDR,1.12.12.12/32,DIRECT,no-resolve
+IP-CIDR,120.53.53.53/32,DIRECT,no-resolve
+IP-CIDR,223.5.5.5/32,DIRECT,no-resolve
+IP-CIDR,223.6.6.6/32,DIRECT,no-resolve
+DOMAIN-SUFFIX,doh.pub,DIRECT
+DOMAIN-SUFFIX,alidns.com,DIRECT
 
-[rewrite_remote]
+# ---- Loopback, LAN and local names ----
+IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+IP-CIDR,169.254.0.0/16,DIRECT,no-resolve
+IP-CIDR6,::1/128,DIRECT,no-resolve
+IP-CIDR6,FC00::/7,DIRECT,no-resolve
+IP-CIDR6,FE80::/10,DIRECT,no-resolve
+DOMAIN,localhost,DIRECT
+DOMAIN-SUFFIX,local,DIRECT
+DOMAIN-SUFFIX,lan,DIRECT
 
-[server_local]
+# ---- Mainland China domains ----
+# Covers .cn, .com.cn, .net.cn, .gov.cn, .edu.cn ...
+DOMAIN-SUFFIX,cn,DIRECT
+DOMAIN-SUFFIX,alibaba.com,DIRECT
+DOMAIN-SUFFIX,alicdn.com,DIRECT
+DOMAIN-SUFFIX,alipay.com,DIRECT
+DOMAIN-SUFFIX,aliyun.com,DIRECT
+DOMAIN-SUFFIX,taobao.com,DIRECT
+DOMAIN-SUFFIX,tmall.com,DIRECT
+DOMAIN-SUFFIX,baidu.com,DIRECT
+DOMAIN-SUFFIX,bdstatic.com,DIRECT
+DOMAIN-SUFFIX,qq.com,DIRECT
+DOMAIN-SUFFIX,tencent.com,DIRECT
+DOMAIN-SUFFIX,myqcloud.com,DIRECT
+DOMAIN-SUFFIX,gtimg.com,DIRECT
+DOMAIN-SUFFIX,wechat.com,DIRECT
+DOMAIN-SUFFIX,jd.com,DIRECT
+DOMAIN-SUFFIX,jdcloud.com,DIRECT
+DOMAIN-SUFFIX,163.com,DIRECT
+DOMAIN-SUFFIX,126.com,DIRECT
+DOMAIN-SUFFIX,126.net,DIRECT
+DOMAIN-SUFFIX,netease.com,DIRECT
+DOMAIN-SUFFIX,sina.com,DIRECT
+DOMAIN-SUFFIX,weibo.com,DIRECT
+DOMAIN-SUFFIX,weibocdn.com,DIRECT
+DOMAIN-SUFFIX,bilibili.com,DIRECT
+DOMAIN-SUFFIX,hdslb.com,DIRECT
+DOMAIN-SUFFIX,zhihu.com,DIRECT
+DOMAIN-SUFFIX,zhimg.com,DIRECT
+DOMAIN-SUFFIX,douyin.com,DIRECT
+DOMAIN-SUFFIX,douyinvod.com,DIRECT
+DOMAIN-SUFFIX,bytedance.com,DIRECT
+DOMAIN-SUFFIX,byteimg.com,DIRECT
+DOMAIN-SUFFIX,toutiao.com,DIRECT
+DOMAIN-SUFFIX,ixigua.com,DIRECT
+DOMAIN-SUFFIX,kuaishou.com,DIRECT
+DOMAIN-SUFFIX,meituan.com,DIRECT
+DOMAIN-SUFFIX,meituan.net,DIRECT
+DOMAIN-SUFFIX,dianping.com,DIRECT
+DOMAIN-SUFFIX,ele.me,DIRECT
+DOMAIN-SUFFIX,xiaomi.com,DIRECT
+DOMAIN-SUFFIX,mi.com,DIRECT
+DOMAIN-SUFFIX,miui.com,DIRECT
+DOMAIN-SUFFIX,huawei.com,DIRECT
+DOMAIN-SUFFIX,hicloud.com,DIRECT
+DOMAIN-SUFFIX,oppo.com,DIRECT
+DOMAIN-SUFFIX,vivo.com,DIRECT
+DOMAIN-SUFFIX,pinduoduo.com,DIRECT
+DOMAIN-SUFFIX,yangkeduo.com,DIRECT
+DOMAIN-SUFFIX,xiaohongshu.com,DIRECT
+DOMAIN-SUFFIX,xhscdn.com,DIRECT
+DOMAIN-SUFFIX,iqiyi.com,DIRECT
+DOMAIN-SUFFIX,youku.com,DIRECT
+DOMAIN-SUFFIX,mgtv.com,DIRECT
+DOMAIN-SUFFIX,sohu.com,DIRECT
+DOMAIN-SUFFIX,sogou.com,DIRECT
+DOMAIN-SUFFIX,ctrip.com,DIRECT
+DOMAIN-SUFFIX,cctv.com,DIRECT
 
-[filter_local]
-host-suffix, alidns.com, direct
-host-suffix, doh.pub, direct
-ip-cidr, 1.12.12.12/32, direct, no-resolve
-ip-cidr, 120.53.53.53/32, direct, no-resolve
-ip-cidr, 223.5.5.5/32, direct, no-resolve
-ip-cidr, 223.6.6.6/32, direct, no-resolve
-ip-cidr, 10.0.0.0/8, direct
-ip-cidr, 127.0.0.0/8, direct
-ip-cidr, 172.16.0.0/12, direct
-ip-cidr, 192.168.0.0/16, direct
-ip-cidr, 224.0.0.0/24, direct
-final, 🕹 终极清单
 
-[rewrite_local]
+# ---- Known-foreign domains, matched before GEOIP ----
+# A poisoned answer for these lands on a mainland IP, GEOIP,CN sends it
+# DIRECT and it hangs. The latency-test hosts are here for the same reason:
+# a healthy node was showing as timed out.
+DOMAIN-SUFFIX,gstatic.com,PROXY
+DOMAIN,cp.cloudflare.com,PROXY
+DOMAIN-SUFFIX,google.com,PROXY
+DOMAIN-SUFFIX,googleapis.com,PROXY
+DOMAIN-SUFFIX,githubusercontent.com,PROXY
+DOMAIN-SUFFIX,github.com,PROXY
 
-[http_backend]
+# ---- Mainland China IPs ----
+# Anything resolving into a CN address goes direct.
+GEOIP,CN,DIRECT
 
-[mitm]
+# Everything else goes through the proxy.
+FINAL,PROXY
+
+[Host]
+# Only the domains listed here use the dedicated AliDNS DoH endpoint.
+# Anything not listed falls through to dns-server above.
+snejsat.baidu.com = server:https://874711-8pxv27wt3mhig10r.alidns.com/dns-query
+2a.gongfuxiong.help = server:https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
+b.miungaming.net = server:https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
