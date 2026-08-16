@@ -24,13 +24,8 @@ doh-server=/d.4iox.net/https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
 # 都会被忽略，所以这里不再列明文 DNS —— 列了也不会被用到。
 
 [policy]
-# 把你订阅里的节点填进这个组。组名 PROXY 与下面 filter 里引用的名字对应。
-# 也可换成 available / round-robin / dest-hash 等其他类型。
-static=PROXY, direct, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/Static.png
 
 [server_remote]
-# 你的订阅地址填这里
-; https://example.com/subscribe, tag=订阅, update-interval=172800, opt-parser=false, enabled=true
 
 [filter_local]
 # 规则自上而下匹配，第一条命中即生效。
