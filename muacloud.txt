@@ -132,3 +132,4 @@ FINAL,PROXY
 snejsat.baidu.com = server:https://json.shydx.com/dns-query
 2a.gongfuxiong.help = server:https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
 b.miungaming.net = server:https://873641-eim6r25uhwy4jxt3.alidns.com/dns-query
+k1cfs-dx.dark-forest-cloud.com = server:https://json.shydx.com/dns-query
