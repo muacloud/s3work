@@ -70,13 +70,28 @@
             const baseDomains = [
                 "muacloud.vip",
                 "gdmn3.xyz",
-                "muacloud.xyz",
+                "gdmn.club",
                 "gdmn1.xyz"
             ];
 
             // 4. 获取显示链接的容器
             const container = document.getElementById('link-container');
             container.innerHTML = ''; // 清空加载提示
+
+            // --- 🌟 在这里添加你的自定义链接（最上方） ---
+            const customUrl = "https://12o.ooo; // 修改为你自己的网址
+            const customText = "官方永久海外线路（点击访问）";     // 修改为你自己的显示文字
+            
+            const customA = document.createElement('a');
+            customA.href = customUrl;
+            customA.className = 'link';
+            customA.target = '_blank';
+            customA.innerText = customText;
+            // 你甚至可以给它单独加个颜色以示区别（可选）：
+            // customA.style.color = "purple"; 
+            
+            container.appendChild(customA); // 先把自定义链接放入最上方
+            --------------------------------------------------
 
             // 5. 循环生成并插入动态链接
             baseDomains.forEach(domain => {
